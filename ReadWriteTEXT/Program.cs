@@ -16,24 +16,19 @@ namespace ReadWriteTEXT
             // Пути файлов для чтения/записи
             string readPath = @"C:\Temp\in.txt";
             string writePath = @"C:\Temp\out.txt";
-
             // Коллекция входных данных из файла
             List<string> textRead = new List<string>();
-
             // Коллекция отфильтрованных входных данных по linq-запросу
             List<int> textUpdate = new List<int>();;
 
-            using (StreamReader sr = new StreamReader(readPath))
+            // Чтение и фильтрация данных из файла
+            textRead = File.ReadAllLines(readPath).ToList();
+            foreach (var item in textRead)
             {
-                textRead = File.ReadAllLines(readPath).ToList();
-
-                foreach (var item in textRead)
-                {
-                    textUpdate.AddRange(item.Split().Where(w => int.TryParse(w, out int result)).Select(s => int.Parse(s)).ToList());
-                }              
-            }
+                textUpdate.AddRange(item.Split().Where(w => int.TryParse(w, out int result)).Select(s => int.Parse(s)).ToList());
+            }              
            
-            // Сортировка текста из файла
+            // Сортировка данных
             List<int> writeText = textUpdate.OrderBy(o => o).ToList();
 
             // Вывод на консоль
