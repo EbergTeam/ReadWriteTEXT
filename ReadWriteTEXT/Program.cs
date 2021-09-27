@@ -13,28 +13,29 @@ namespace ReadWriteTEXT
     {
         static void Main(string[] args)
         {
+            // Пути файлов для чтения/записи
             string readPath = @"C:\Temp\in.txt";
             string writePath = @"C:\Temp\out.txt";
 
-            List<string> textRead = new List<string>();
-
+            // Коллекция для входных данных
+            List<int> textRead = new List<int>();
 
             using (StreamReader sr = new StreamReader(readPath))
             {
+                sr.ReadToEnd();
                 string line;
-                while ((line = sr.ReadLine()) != null) // построчное чтение до конца файла //
+                while ((line = sr.ReadLine()) != null) // построчное чтение до конца файла
                 {
-                    string[] lineSubstring = line.Split().Select(s => s).ToArray(); // разделяем строку на отдельные подстроки
+                    List<int> lineSubstring = line.Split().Where(w => int.TryParse(w, out int result)).Select(s => int.Parse(s)).ToList(); // разделяем строку на подстроки + фильтр элементов которые возможно пребразовать в int + преобразуем в int
                     foreach (var item in lineSubstring)
-                    {
-                        if (int.TryParse(item, out int result)) // Добавляем в лист только те элементы, которые возможно пребразовать в int
+                    { 
                             textRead.Add(item);
                     }
                 }
             }
 
             // Сортировка текста из файла
-            List<string> writeText = textRead.OrderBy(o => int.Parse(o)).ToList();
+            List<int> writeText = textRead.OrderBy(o => o).ToList();
 
             // Вывод на консоль
             foreach (var item in writeText)
