@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ReadWriteTEXT
 {
-    // TestPullRequests
+    // TestPool
     // Написать приложение, которое считает цифры из файла in.txt,
     // выведет в консоль, отсортирует, и запишет в out.txt
 
@@ -13,28 +13,23 @@ namespace ReadWriteTEXT
     {
         static void Main(string[] args)
         {
+            // Пути файлов для чтения/записи
             string readPath = @"C:\Temp\in.txt";
             string writePath = @"C:\Temp\out.txt";
-
+            // Коллекция входных данных из файла
             List<string> textRead = new List<string>();
+            // Коллекция отфильтрованных входных данных по linq-запросу
+            List<int> textUpdate = new List<int>();;
 
-
-            using (StreamReader sr = new StreamReader(readPath))
+            // Чтение и фильтрация данных из файла
+            textRead = File.ReadAllLines(readPath).ToList();
+            foreach (var item in textRead)
             {
-                string line;
-                while ((line = sr.ReadLine()) != null) // построчное чтение до конца файла //
-                {
-                    string[] lineSubstring = line.Split().Select(s => s).ToArray(); // разделяем строку на отдельные подстроки
-                    foreach (var item in lineSubstring)
-                    {
-                        if (int.TryParse(item, out int result)) // Добавляем в лист только те элементы, которые возможно пребразовать в int
-                            textRead.Add(item);
-                    }
-                }
-            }
-
-            // Сортировка текста из файла
-            List<string> writeText = textRead.OrderBy(o => int.Parse(o)).ToList();
+                textUpdate.AddRange(item.Split().Where(w => int.TryParse(w, out int result)).Select(s => int.Parse(s)).ToList());
+            }              
+           
+            // Сортировка данных
+            List<int> writeText = textUpdate.OrderBy(o => o).ToList();
 
             // Вывод на консоль
             foreach (var item in writeText)
