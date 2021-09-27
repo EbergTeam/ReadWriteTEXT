@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ReadWriteTEXT
 {
-    // TestPullRequests
+    // TestPool
     // Написать приложение, которое считает цифры из файла in.txt,
     // выведет в консоль, отсортирует, и запишет в out.txt
 
